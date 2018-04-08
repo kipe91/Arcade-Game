@@ -2,10 +2,83 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
+    <meta name="author" content="Kim Pettersson">
+    <title>KP - Arcade Game</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="blackStyle block1"></div>
+    <div class="blackStyle block2"></div>
+    <div class="blackStyle block3"></div>
+    <div class="blackStyle block4"></div>
+
+    <div class="outerFrame">
+        <!-- left side -->
+        <div class="controller">
+            <span class="c-background-x"></span>
+            <span class="c-background-y"></span>
+
+            <button class="c-Btn" id="c-Btn-up">
+                <span class="arrow up"></span>
+            </button>
+            <button class="c-Btn" id="c-Btn-left">
+                <span class="arrow left"></span>
+            </button>
+            <button class="c-Btn" id="c-Btn-down">
+                <span class="arrow down"></span>
+            </button>
+            <button class="c-Btn" id="c-Btn-right">
+                <span class="arrow right"></span>
+            </button>
+        </div>
+
+        <button class="pressBtn" id="controllerStartBtn">START</button>
+        <button class="pressBtn" id="controllerSelectBtn">SELECT</button>
+
+        <!-- middle part -->
+    	<div class="innerFrame">
+        	<main class="main" id="main">
+                <div class="screen">
+                    <div id="startMenu">
+                        <h1 id="menu-h1"></h1>
+                        <div class="char-select">
+                            <span class="arrow left" id="char-left"></span>
+                            <span class="arrow right" id="char-right"></span>
+                            <img class="char-select-img" src="images/Selector.png" alt="">
+                            <img class="char-select-img" src="images/char-boy.png" id="gameChar" alt="Game character">
+                        </div>
+                        <h3 id="char-text"></h3>
+                        <h3 class="hidden" id="soundOption">Sound: <i id="sound"> on </i></h3>
+                        <button class="gameStartBtn"></button>
+                        <button class="hidden" id="gameContinueBtn">Continue</button>
+                    </div>
+                    <div id="finnishMenu">
+                        <h1>Congratulation!</h1>
+                        <p>Your time: </p>
+                        <span id="timewatch"></span>
+                        <button class="gameStartBtn"></button>
+                    </div>
+                </div>  
+            </main>
+            <footer class="gameConsole"></footer>
+        </div>
+
+        <!-- right side -->
+        <span class="powerLight"></span>
+        <span class="powerText">Power</span>
+
+        <button class="pushBtn" id="controller-A-btn">A</button>
+        <button class="pushBtn" id="controller-B-btn">B</button>
+
+        <span class="speaker" id="speaker1"></span>
+        <span class="speaker" id="speaker2"></span>
+        <span class="speaker" id="speaker3"></span>
+        <span class="speaker" id="speaker4"></span>
+        <span class="speaker" id="speaker5"></span>
+    </div>
+	
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>

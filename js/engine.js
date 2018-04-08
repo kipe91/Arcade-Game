@@ -26,7 +26,7 @@ var Engine = (function(global) {
 
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    doc.getElementById("main").appendChild(canvas);
 
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
@@ -79,7 +79,31 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+        checkKey();
+    }
+
+    function checkCollisions() {
+        for (let i = 0; i < allEnemies.length; i++) {
+            if (player.collisionBetween(player, allEnemies[i])) {
+                player.y = 390;
+                (controller.sound === "on") ? hitAudio.play() : false;
+                player.looseHearts();
+            }
+        }
+    }
+
+    function checkKey() {
+        if (player.findingKey(player, key)) {
+            key.x = 500;
+            key.found = true;
+            (controller.sound === "on") ? keyAudio.play() : false;
+            arcade.gameStats += " | <img src=\"images/Key.png\" alt=\"key\" height=\"30px\" width=\"30px\">";
+            gameConsole.html(arcade.gameStats);
+            for (let i = 0; i < allRocks.length; i++) {
+                allRocks[i].y = -200;
+            }
+        }
     }
 
     /* This is called by the update function and loops through all of the
@@ -111,7 +135,7 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 1 of 3 of stone
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
+                'images/stone-block.png',   // Row 1 of 2 of grass
                 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
             numRows = 6,
@@ -152,8 +176,12 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
+        allRocks.forEach(function(rock) {
+            rock.render();
+        });
 
         player.render();
+        key.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -173,7 +201,13 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/Key.png',
+        'images/Rock.png'
     ]);
     Resources.onReady(init);
 
