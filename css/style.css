@@ -334,6 +334,22 @@ body {
 	text-decoration: underline;
 }
 
+#nextBtn {
+	border: 1px solid transparent;
+	border-bottom-color: black;
+	padding: 5px;
+	width: 88px;
+	overflow: hidden;
+	font-size: 20px;
+	background-color: transparent;
+	cursor: pointer;
+}
+
+#nextBtn:hover {
+	animation: changeWidth 0.6s;
+	animation-fill-mode: forwards;
+}
+
 .gameStartBtn, #gameContinueBtn {
 	margin-top: 50px;
 	border: 1px solid black;
@@ -378,4 +394,9 @@ canvas {
 @keyframes startingController {
     from {background-color: black;}
     to {background-color: lightblue;}
+}
+
+@keyframes changeWidth {
+    from {width: 88px}
+    to {width: 105px;}
 }

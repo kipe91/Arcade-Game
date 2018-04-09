@@ -181,6 +181,12 @@ Game.prototype.startMenu = function (h1 = "Arcade Game", charText = "Select char
     }
 };
 
+Game.prototype.controls = function () {
+    gameConsole.text("- Game intro -");
+    arcade.state = "paused";
+    $("#introMenu").removeClass("hidden");
+};
+
 Game.prototype.resetGame = function () {
     player.hearts = 3;
     let charHearts = "";
@@ -300,12 +306,11 @@ Controller.prototype.handleInput = function(key) {
 };
 
 Controller.prototype.startingUp = function() {
-    console.log("Controller started.");
-    $(".gameConsole").text("Starting up..");
+    gameConsole.text("Starting up..");
     $(".screen").addClass("screenLive");
     $(".powerLight").css("background-color", "lightgreen");
     setTimeout(function() {
-        arcade.startMenu(); 
+        arcade.controls(); 
     }, 3000);
     (controller.sound === "on") ? startAudio.play() : false;
 };
@@ -350,6 +355,12 @@ startGameButton.on("click", function() {
 const continueGameButton = $("#gameContinueBtn");
 continueGameButton.on("click", function() {
     arcade.continueGame();
+});
+
+const introMenuButton = $("#nextBtn");
+introMenuButton.on("click", function() {
+    $("#introMenu").addClass("hidden");
+    arcade.startMenu();
 });
 
 const soundOption = $("#soundOption");
