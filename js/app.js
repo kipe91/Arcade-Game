@@ -199,6 +199,51 @@ Rock.prototype.render = function() {
 };
 
 /*****************************************
+* Stopwatch class: 
+******************************************/
+const Stopwatch = function() {
+    this.currentTime = "00:00:0";
+    this.msec = 0;
+    this.secLow = 0;
+    this.secHigh = 0;
+    this.minLow = 0;
+    this.minHigh = 0;
+    this.clock = "";
+};
+
+Stopwatch.prototype.startTime = function() {
+    this.clock = setInterval(function(){ gameTime.timeFunction(); }, 100);
+};
+
+Stopwatch.prototype.stopTime = function() {
+    clearInterval(this.clock);
+};
+
+Stopwatch.prototype.timeFunction = function() {
+    this.msec++;
+
+        if (this.msec === 10) {
+            this.secLow++;
+            this.msec = 0;
+            };
+        if (this.secLow === 10) {
+            this.secHigh++;
+            this.secLow = 0;
+        };
+        if (this.secHigh === 6) {
+            this.minLow++;
+            this.secHigh = 0;
+            this.secLow = 0;
+        };
+        if (this.minLow === 10) {
+            this.minHigh++;
+            this.minLow = 0;
+        };
+
+        this.currentTime = "" + this.minHigh + this.minLow + ":" + this.secHigh + this.secLow + ":" + this.msec;
+};
+
+/*****************************************
 * Game class: 
 ******************************************/
 const Game = function() {
@@ -401,6 +446,7 @@ let allGems = [];
 const key = new Key();
 const arcade = new Game();
 const gameConsole = $(".gameConsole");
+const gameTime = new Stopwatch();
 /********************/
 
 /* Sounds: */

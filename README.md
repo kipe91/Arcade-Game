@@ -23,10 +23,10 @@ Ingame graphics by Udacity. Sound effects from [OpenGameArt](https://opengameart
    - Iframe the "index.html" file on your site.
    	 - or..
    - For code with everything:
-     - copy all code inside the body tags and put it inside a div on your site. Remenber that all files are needed.
+     - copy all code inside the body tags and put it inside a div on your site. Remember that all files are needed.
 
 ## Play guide:
-Collect gems (fast - time make them less worth). After 4 gems the "master key" spawns on gameboard.
+Collect gems (fast - time makes them less worth). After 4 gems the "master key" spawns on gameboard.
 You want to collect the "master key" to get acces to the water.
 Get to the water and you succes!
 Under all time avoid the bugs/enemys to complete this.
@@ -37,7 +37,3 @@ To change character or toggle sound on/off you can press the "select" button.
 
 ## License: 
 Free for private use. For other idées please contact me first.
-
-## Future things to be added:
-- Timewatch.
-- Scoreboard.
