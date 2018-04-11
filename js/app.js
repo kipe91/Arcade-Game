@@ -29,6 +29,7 @@ const Player = function(x, y) {
     this.x = x;
     this.y = y;
     this.hearts = 3;
+    this.score = 0;
     this.character = 1;
     this.sprite = 'images/char-boy.png';
 };
@@ -36,6 +37,16 @@ const Player = function(x, y) {
 Player.prototype.collisionBetween = function (player, enemy) {
     if (this.y === enemy.y) {
         if ((enemy.x + 30 >= this.x - 25) && (enemy.x - 30 <= this.x + 25)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+};
+
+Player.prototype.findingGem = function (player, gem) {
+    if (this.y === (gem.y - 83)) {
+        if ((gem.x + 30 >= this.x - 30) && (gem.x - 30 <= this.x + 30)) {
             return true;
         } else {
             return false;
@@ -137,13 +148,41 @@ Player.prototype.changeCharacter = function(value) {
 ******************************************/
 const Key = function() {
     this.sprite = 'images/Key.png';
-    this.x = 230;
-    this.y = 210; // player 141.
+    this.x = 500;
+    this.y = 500;
     this.found = false;
 };
 
 Key.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+/*****************************************
+* Gem class: 
+******************************************/
+const Gem = function(x, y) {
+    this.sprite = 'images/Gem-Orange.png';
+    this.x = x;
+    this.y = y;
+    this.gemColor = 1; //orange
+    this.worth = 500;
+};
+
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Gem.prototype.changeColor = function() {
+    if (this.gemColor === 1) {
+        this.sprite = 'images/Gem-Green.png';
+        this.gemColor = 2; /*green*/
+        this.worth = 300;
+    }
+    else {
+        this.sprite = 'images/Gem-Blue.png';
+        this.gemColor = 3; /*blue*/
+        this.worth = 150;
+    }
 };
 
 /*****************************************
@@ -189,6 +228,8 @@ Game.prototype.controls = function () {
 
 Game.prototype.resetGame = function () {
     player.hearts = 3;
+    player.score = 0;
+    key.found = false;
     let charHearts = "";
     for (let i = 1; i <= 3; i++) {
         let heart = "<img src=\"images/Heart.png\" id=\"heart" + i + "\" alt=\"heart\" height=\"30px\" width=\"30px\">";
@@ -247,30 +288,63 @@ Game.prototype.createGameEntities = function () {
     allRocks.splice(0);
     allRocks.push(stone1, stone2, stone3, stone4, stone5);
 
-    const varX = Math.floor((Math.random() * 5) + 1);
+    const gem1 = new Gem(100, 650);
+    const gem2 = new Gem(200, 650);
+    const gem3 = new Gem(300, 650);
+    const gem4 = new Gem(400, 650);
 
-    key.y = 210;
+    allGems.splice(0);
+    allGems.push(gem1, gem2, gem3, gem4);
 
-    switch (varX) {
+    this.controlGems(0);
+};
+
+Game.prototype.controlGems = function(index) {
+    let targetGem = allGems[index];
+    targetGem.y = this.randomY();
+    targetGem.x = this.randomX();
+
+    let updateIt = setInterval(function(){ targetGem.changeColor() }, 4500);
+    setTimeout(function() {
+        clearInterval(updateIt); 
+    }, 10000);
+};
+
+Game.prototype.randomX = function() {
+    const rand = Math.floor((Math.random() * 5) + 1);
+    switch (rand) {
       case 1: {
-        key.x = 30;
-        break;
+        return 25;
       }
       case 2: {
-        key.x = 130;
-        break;
+        return 130;
       }
       case 3: {
-        key.x = 230;
-        break;
+        return 230;
       }
       case 4: {
-        key.x = 330;
-        break;
+        return 330;
       }
       case 5: {
-        key.x = 430;
-        break;
+        return 430;
+      }
+    }
+};
+
+Game.prototype.randomY = function() {
+    const rand = Math.floor((Math.random() * 4) + 1);
+    switch (rand) {
+      case 1: {
+        return 141; // 58
+      }
+      case 2: {
+        return 224; // 141
+      }
+      case 3: {
+        return 307; // 224
+      }
+      case 4: {
+        return 390; // 307
       }
     }
 };
@@ -318,20 +392,22 @@ Controller.prototype.startingUp = function() {
 /*****************************************
 * Game/Controller setup: 
 ******************************************/
-/* Global varibles: */
-let controller = new Controller();
-let player = new Player(205,390);
+/* Global variables: */
+const controller = new Controller();
+const player = new Player(205,390);
 let allEnemies = [];
 let allRocks = [];
-let key = new Key();
-let arcade = new Game();
-let gameConsole = $(".gameConsole");
+let allGems = [];
+const key = new Key();
+const arcade = new Game();
+const gameConsole = $(".gameConsole");
 /********************/
 
 /* Sounds: */
 const startAudio = new Audio('audio/start-up.wav');
 const hitAudio = new Audio('audio/hit.wav');
 const moveAudio = new Audio('audio/move.wav');
+const gemAudio = new Audio('audio/find-gem.mp3');
 const keyAudio = new Audio('audio/find-key.wav');
 const victoryAudio = new Audio('audio/applause.wav');
 /***********/

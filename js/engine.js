@@ -80,6 +80,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
+        checkGem();
         checkKey();
     }
 
@@ -89,6 +90,18 @@ var Engine = (function(global) {
                 player.y = 390;
                 (controller.sound === "on") ? hitAudio.play() : false;
                 player.looseHearts();
+            }
+        }
+    }
+
+    function checkGem() {
+        for (let i = 0; i < allGems.length; i++) {
+            if (player.findingGem(player, allGems[i])) {
+                allGems[i].x = 600;
+                player.score += allGems[i].worth;
+                (controller.sound === "on") ? gemAudio.play() : false;
+                let num = i + 1;
+                (num < allGems.length ) ? arcade.controlGems(num) : (key.y = 210) && (key.x = arcade.randomX());
             }
         }
     }
@@ -179,6 +192,9 @@ var Engine = (function(global) {
         allRocks.forEach(function(rock) {
             rock.render();
         });
+        allGems.forEach(function(gem) {
+            gem.render();
+        });
 
         player.render();
         key.render();
@@ -207,7 +223,10 @@ var Engine = (function(global) {
         'images/char-pink-girl.png',
         'images/char-princess-girl.png',
         'images/Key.png',
-        'images/Rock.png'
+        'images/Rock.png',
+        'images/Gem-Orange.png',
+        'images/Gem-Green.png',
+        'images/Gem-Blue.png'
     ]);
     Resources.onReady(init);
 
