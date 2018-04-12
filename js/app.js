@@ -34,6 +34,7 @@ const Player = function(x, y) {
     this.sprite = 'images/char-boy.png';
 };
 
+// Checks for enemy/player collision.
 Player.prototype.collisionBetween = function (player, enemy) {
     if (this.y === enemy.y) {
         if ((enemy.x + 30 >= this.x - 25) && (enemy.x - 30 <= this.x + 25)) {
@@ -44,6 +45,7 @@ Player.prototype.collisionBetween = function (player, enemy) {
     }
 };
 
+// If Player finding a Gem.
 Player.prototype.findingGem = function (player, gem) {
     if (this.y === (gem.y - 83)) {
         if ((gem.x + 30 >= this.x - 30) && (gem.x - 30 <= this.x + 30)) {
@@ -54,6 +56,7 @@ Player.prototype.findingGem = function (player, gem) {
     }
 };
 
+// If Player finding the key.
 Player.prototype.findingKey = function (player, key) {
     if (this.y === (key.y - 69)) {
         if ((key.x + 30 >= this.x - 25) && (key.x - 30 <= this.x + 25)) {
@@ -64,6 +67,7 @@ Player.prototype.findingKey = function (player, key) {
     }
 };
 
+// Make Player loose heart on enemy hit.
 Player.prototype.looseHearts = function() {
     if (this.hearts === 3) {
         this.hearts = 2;
@@ -87,7 +91,7 @@ Player.prototype.update = function() {
     //Function "handleInput" does the work.
 };
 
-// Draw the player on the screen.
+// Draw the player on screen.
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -153,6 +157,7 @@ const Key = function() {
     this.found = false;
 };
 
+// Draw the Key on screen.
 Key.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -168,10 +173,12 @@ const Gem = function(x, y) {
     this.worth = 500;
 };
 
+// Draw the Gem on screen.
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Changing color/score for a gem.
 Gem.prototype.changeColor = function() {
     if (this.gemColor === 1) {
         this.sprite = 'images/Gem-Green.png';
@@ -194,12 +201,18 @@ const Rock = function(x, y) {
     this.y = y;
 };
 
+// Draw the Rock on the screen.
 Rock.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 /*****************************************
 * Stopwatch class: 
+*
+* startTime() - to start.
+* stopTime() - to stop.
+* timeFunction() - where magic happens.
+* resetTime() - to reset.
 ******************************************/
 const Stopwatch = function() {
     this.currentTime = "00:00:0";
@@ -259,6 +272,7 @@ const Game = function() {
     this.gameStats = "";
 };
 
+// Show game "start" and "select" menu.
 Game.prototype.startMenu = function (h1 = "Arcade Game", charText = "Select character", startBtn = "START GAME", selected = false) {
     gameConsole.text("- Game menu -");
     (arcade.state === "running") ? $(".screen").fadeIn() && $("#startMenu").fadeIn() : $("#startMenu").fadeIn();
@@ -274,12 +288,14 @@ Game.prototype.startMenu = function (h1 = "Arcade Game", charText = "Select char
     }
 };
 
-Game.prototype.controls = function () {
+// Show game "intro menu".
+Game.prototype.introMenu = function () {
     gameConsole.text("- Game intro -");
     arcade.state = "paused";
     $("#introMenu").removeClass("hidden");
 };
 
+// Reseting values for new game.
 Game.prototype.resetGame = function () {
     player.hearts = 3;
     player.score = 0;
@@ -294,6 +310,7 @@ Game.prototype.resetGame = function () {
     gameConsole.html(arcade.gameStats);
 };
 
+// Starting new game and showing canvas.
 Game.prototype.startGame = function () {
     $(".screen").fadeOut();
     (arcade.state === "win") ? $("#finnishMenu").fadeOut() : $("#startMenu").fadeOut();
@@ -303,6 +320,7 @@ Game.prototype.startGame = function () {
     gameTime.startTime();
 };
 
+// Continue game and showing canvas.
 Game.prototype.continueGame = function () {
     $(".screen").fadeOut();
     $("#startMenu").fadeOut();
@@ -314,6 +332,7 @@ Game.prototype.continueGame = function () {
     $(".gameStartBtn").removeClass("hidden");
 };
 
+// Finnish! Show score and time.
 Game.prototype.finnishGame = function () {
     player.y = 390;
     player.x = 205;
@@ -328,6 +347,7 @@ Game.prototype.finnishGame = function () {
     $("#finnishScore").text(player.score);
 };
 
+// Create game Entities.
 Game.prototype.createGameEntities = function () {
     const bug1 = new Enemy(0, 58, 200);
     const bug2 = new Enemy(-200, 141, 150);
@@ -370,6 +390,7 @@ Game.prototype.controlGems = function(index) {
     }, 10000);
 };
 
+// Random X position on gameboard.
 Game.prototype.randomX = function() {
     const rand = Math.floor((Math.random() * 5) + 1);
     switch (rand) {
@@ -391,6 +412,7 @@ Game.prototype.randomX = function() {
     }
 };
 
+// Random Y position on gameboard.
 Game.prototype.randomY = function() {
     const rand = Math.floor((Math.random() * 4) + 1);
     switch (rand) {
@@ -409,6 +431,8 @@ Game.prototype.randomY = function() {
     }
 };
 
+// handling keyboard input.
+// TODO: Let user start/continue game with keyboard.
 Game.prototype.handleInput = function(key) {
     switch (key) {
       case 'space': {
@@ -433,18 +457,20 @@ const Controller = function() {
     this.sound = "on";
 };
 
+// handling keyboard input.
 Controller.prototype.handleInput = function(key) {
     if (key === "space") {
         this.startingUp();
     }
 };
 
+// "starting the controller"
 Controller.prototype.startingUp = function() {
     gameConsole.text("Starting up..");
     $(".screen").addClass("screenLive");
     $(".powerLight").css("background-color", "lightgreen");
     setTimeout(function() {
-        arcade.controls(); 
+        arcade.introMenu(); 
     }, 3000);
     (controller.sound === "on") ? startAudio.play() : false;
 };
@@ -452,7 +478,7 @@ Controller.prototype.startingUp = function() {
 /*****************************************
 * Game/Controller setup: 
 ******************************************/
-/* Global variables: */
+/*** Global variables: ***/
 const controller = new Controller();
 const player = new Player(205,390);
 let allEnemies = [];
@@ -464,16 +490,16 @@ const gameConsole = $(".gameConsole");
 const gameTime = new Stopwatch();
 /********************/
 
-/* Sounds: */
+/*** Sounds: ***/
 const startAudio = new Audio('audio/start-up.wav');
 const hitAudio = new Audio('audio/hit.wav');
 const moveAudio = new Audio('audio/move.wav');
 const gemAudio = new Audio('audio/find-gem.mp3');
 const keyAudio = new Audio('audio/find-key.wav');
 const victoryAudio = new Audio('audio/applause.wav');
-/***********/
+/***************/
 
-/* buttons */
+/*** buttons ****/
 const startControllerButton = $("#controllerStartBtn");
 startControllerButton.on("click", function() {
     (arcade.state === "running" || arcade.state === "paused" || arcade.state === "win") ? console.log("Controller already on") : controller.startingUp();
@@ -507,16 +533,16 @@ soundOption.on("click", function() {
 
 $("#char-left").on("click", function() {player.changeCharacter("back")});
 $("#char-right").on("click", function() {player.changeCharacter("next")});
-/**********/
+/**************/
 
-/* Controller steering */
+/*** Controller steering ***/
 $("#c-Btn-up").on("click", function() { if (arcade.state === "running") {player.handleInput("up")} });
 $("#c-Btn-left").on("click", function() { if (arcade.state === "running") {player.handleInput("left")} });
 $("#c-Btn-right").on("click", function() { if (arcade.state === "running") {player.handleInput("right")} });
 $("#c-Btn-down").on("click", function() { if (arcade.state === "running") {player.handleInput("down")} });
-/***********************/
+/***************************/
 
-// This listens for key presses.
+// This listens for key presses and set to right handler.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
