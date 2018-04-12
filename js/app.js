@@ -243,6 +243,14 @@ Stopwatch.prototype.timeFunction = function() {
         this.currentTime = "" + this.minHigh + this.minLow + ":" + this.secHigh + this.secLow + ":" + this.msec;
 };
 
+Stopwatch.prototype.resetTime = function() {
+    this.msec = 0;
+    this.secLow = 0;
+    this.secHigh = 0;
+    this.minLow = 0;
+    this.minHigh = 0;
+};
+
 /*****************************************
 * Game class: 
 ******************************************/
@@ -255,6 +263,7 @@ Game.prototype.startMenu = function (h1 = "Arcade Game", charText = "Select char
     gameConsole.text("- Game menu -");
     (arcade.state === "running") ? $(".screen").fadeIn() && $("#startMenu").fadeIn() : $("#startMenu").fadeIn();
     arcade.state = "paused";
+    gameTime.stopTime();
     $("#menu-h1").text(h1);
     $("#char-text").text(charText);
     $(".gameStartBtn").text(startBtn);
@@ -275,6 +284,7 @@ Game.prototype.resetGame = function () {
     player.hearts = 3;
     player.score = 0;
     key.found = false;
+    gameTime.resetTime();
     let charHearts = "";
     for (let i = 1; i <= 3; i++) {
         let heart = "<img src=\"images/Heart.png\" id=\"heart" + i + "\" alt=\"heart\" height=\"30px\" width=\"30px\">";
@@ -290,12 +300,14 @@ Game.prototype.startGame = function () {
     arcade.state = "running";
     arcade.resetGame();
     arcade.createGameEntities();
+    gameTime.startTime();
 };
 
 Game.prototype.continueGame = function () {
     $(".screen").fadeOut();
     $("#startMenu").fadeOut();
     arcade.state = "running";
+    gameTime.startTime();
     gameConsole.html(arcade.gameStats);
     $("#soundOption").addClass("hidden");
     $("#gameContinueBtn").addClass("hidden");
@@ -305,12 +317,15 @@ Game.prototype.continueGame = function () {
 Game.prototype.finnishGame = function () {
     player.y = 390;
     player.x = 205;
+    gameTime.stopTime();
     gameConsole.text("- Finnish modal -");
     arcade.state = "win";
     (controller.sound === "on") ? victoryAudio.play() : false;
     $(".gameStartBtn").text("Play again?");
     $(".screen").fadeIn();
     $("#finnishMenu").fadeIn();
+    $("#finnishTime").text(gameTime.currentTime);
+    $("#finnishScore").text(player.score);
 };
 
 Game.prototype.createGameEntities = function () {
