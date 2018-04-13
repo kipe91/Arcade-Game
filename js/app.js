@@ -207,14 +207,14 @@ Rock.prototype.render = function() {
 };
 
 /*****************************************
-* Stopwatch class: 
+* StopWatch class: 
 *
 * startTime() - to start.
 * stopTime() - to stop.
 * timeFunction() - where magic happens.
 * resetTime() - to reset.
 ******************************************/
-const Stopwatch = function() {
+const StopWatch = function() {
     this.currentTime = "00:00:0";
     this.msec = 0;
     this.secLow = 0;
@@ -224,39 +224,39 @@ const Stopwatch = function() {
     this.clock = "";
 };
 
-Stopwatch.prototype.startTime = function() {
+StopWatch.prototype.startTime = function() {
     this.clock = setInterval(function(){ gameTime.timeFunction(); }, 100);
 };
 
-Stopwatch.prototype.stopTime = function() {
+StopWatch.prototype.stopTime = function() {
     clearInterval(this.clock);
 };
 
-Stopwatch.prototype.timeFunction = function() {
+StopWatch.prototype.timeFunction = function() {
     this.msec++;
 
         if (this.msec === 10) {
             this.secLow++;
             this.msec = 0;
-            };
+            }
         if (this.secLow === 10) {
             this.secHigh++;
             this.secLow = 0;
-        };
+        }
         if (this.secHigh === 6) {
             this.minLow++;
             this.secHigh = 0;
             this.secLow = 0;
-        };
+        }
         if (this.minLow === 10) {
             this.minHigh++;
             this.minLow = 0;
-        };
+        }
 
         this.currentTime = "" + this.minHigh + this.minLow + ":" + this.secHigh + this.secLow + ":" + this.msec;
 };
 
-Stopwatch.prototype.resetTime = function() {
+StopWatch.prototype.resetTime = function() {
     this.msec = 0;
     this.secLow = 0;
     this.secHigh = 0;
@@ -349,6 +349,7 @@ Game.prototype.finnishGame = function () {
 
 // Create game Entities.
 Game.prototype.createGameEntities = function () {
+    "use strict";
     const bug1 = new Enemy(0, 58, 200);
     const bug2 = new Enemy(-200, 141, 150);
     const bug3 = new Enemy(0, 224, 180);
@@ -384,7 +385,7 @@ Game.prototype.controlGems = function(index) {
     targetGem.y = this.randomY();
     targetGem.x = this.randomX();
 
-    let updateIt = setInterval(function(){ targetGem.changeColor() }, 4500);
+    let updateIt = setInterval(function(){ targetGem.changeColor(); }, 4500);
     setTimeout(function() {
         clearInterval(updateIt); 
     }, 10000);
@@ -487,7 +488,7 @@ let allGems = [];
 const key = new Key();
 const arcade = new Game();
 const gameConsole = $(".gameConsole");
-const gameTime = new Stopwatch();
+const gameTime = new StopWatch();
 /********************/
 
 /*** Sounds: ***/
@@ -531,15 +532,15 @@ soundOption.on("click", function() {
     (controller.sound === "on") ? (controller.sound = "off") && $("#sound").text("off") : (controller.sound = "on") && $("#sound").text("on");
 });
 
-$("#char-left").on("click", function() {player.changeCharacter("back")});
-$("#char-right").on("click", function() {player.changeCharacter("next")});
+$("#char-left").on("click", function() {player.changeCharacter("back");});
+$("#char-right").on("click", function() {player.changeCharacter("next");});
 /**************/
 
 /*** Controller steering ***/
-$("#c-Btn-up").on("click", function() { if (arcade.state === "running") {player.handleInput("up")} });
-$("#c-Btn-left").on("click", function() { if (arcade.state === "running") {player.handleInput("left")} });
-$("#c-Btn-right").on("click", function() { if (arcade.state === "running") {player.handleInput("right")} });
-$("#c-Btn-down").on("click", function() { if (arcade.state === "running") {player.handleInput("down")} });
+$("#c-Btn-up").on("click", function() { if (arcade.state === "running") {player.handleInput("up");} });
+$("#c-Btn-left").on("click", function() { if (arcade.state === "running") {player.handleInput("left");} });
+$("#c-Btn-right").on("click", function() { if (arcade.state === "running") {player.handleInput("right");} });
+$("#c-Btn-down").on("click", function() { if (arcade.state === "running") {player.handleInput("down");} });
 /***************************/
 
 // This listens for key presses and set to right handler.

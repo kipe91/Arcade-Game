@@ -3,6 +3,7 @@
 A fun javascript game where you want to collect gems as score and then try to get to the water with your character without getting hit by enemy bugs. Navigate by keyboard or touch/click.
 Collect gems to get higher score. 
 Works on some phone devices but not designed for that so can be weird then.
+Try it out [Here](https://htmlpreview.github.io/?https://github.com/kipe91/Arcade-Game/blob/master/index.html)
 
 Ingame graphics and "game engine" by Udacity, sound effects from [OpenGameArt](https://opengameart.org/) and the rest coding by my self.
 
