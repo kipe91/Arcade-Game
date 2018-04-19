@@ -38,4 +38,4 @@ Start the console with spacebar or by pressing the "start" button provided.
 To change character or toggle sound on/off you can press the "select" button.
 
 ## License: 
-Free for private use. For other idées please contact me first.
+Free for private use. For other idées please contact me first...
